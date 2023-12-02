@@ -1,0 +1,24 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: voteapp
+  namespace: default
+spec:
+  entryPoints: 
+    - web
+  routes:
+    - match: Host(`vote.simplon-lion.space`)
+      kind: Rule
+      services:
+      - name: clustvoteapp
+        port: 80
+      middlewares:
+        - name: basicauth-middleware
+        - name: ipwhitelist
+  tls: # Not merged with static configuration
+    # certResolver: letsencrypt # You can add this later
+    options:
+      # Change these. Must match the metadata from step 2
+      name: auto-cert
+      namespace: default
+  

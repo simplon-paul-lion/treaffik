@@ -1,0 +1,32 @@
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+ name: voteapp-http
+ namespace: default
+spec:
+ acme:
+   email: ynoxis@gmail.com
+   # We use the staging server here for testing to avoid hitting
+   server: https://acme-v02.api.letsencrypt.org/directory
+   privateKeySecretRef:
+     # if not existing, it will register a new account and stores it
+     name: voteapp-key
+   solvers:
+     - http01:
+         # The ingressClass used to create the necessary ingress routes
+         ingress:
+           class: traefik
+
+#---
+# apiVersion: cert-manager.io/v1
+# kind: Certificate
+# metadata:
+#   name: traefik_cert
+# spec:
+#   dnsNames:
+#     - vote.simplon-lion.space
+#   secretName: tls
+#   issuerRef:
+#     name: tls_voteapp
+#     kind: ClusterIssuer

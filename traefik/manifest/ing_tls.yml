@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+ name: vote-ingress
+ namespace: default
+ annotations:
+   cert-manager.io/issuer: "voteapp-http"
+spec:
+ tls:
+   - hosts:
+       - vote.simplon-lion.space
+     secretName: vote-ingress-http
+ rules:
+   - host: vote.simplon-lion.space
+     http:
+       paths:
+         - path: /
+           pathType: Prefix
+           backend:
+             service:
+               name: clustvoteapp
+               port:
+                number: 80
